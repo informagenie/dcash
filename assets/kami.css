@@ -1,0 +1,8 @@
+/**
+    Ajout de CSS Modifié
+*/
+
+input[type=text], input[type=search]
+{
+    text-transform: uppercase !important;
+}
