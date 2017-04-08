@@ -88,14 +88,21 @@ class User extends Basecontroller
                 return;
             }
         }
+        $data['payment_options'] = $this->payment->payment_by_id($data['options']->id_paiement);
         $this->loadViews("check", $this->global, $data, null);
     }
 
     function commande($reference)
     {
-        if ($this->woocommerce->change_order_status('2713', dc_to_wc_status(STATUS_END))) {
-            echo "<h1>SUCCESS</h1>";
-        }
+//        try{
+//            if ($this->woocommerce->change_order_state('2713', dc_to_wc_status(STATUS_WAIT))) {
+//                echo "<h1>SUCCESS</h1>";
+//            }
+//        }catch (Exception $exception)
+//        {
+//            $this->__alert_order($exception->getMessage(), 'danger', base_url());
+//        }
+
         if (!$data['options'] = $this->payment->paymentBy(html_escape($reference))) {
             $this->pageNotFound();
             return;
@@ -161,7 +168,7 @@ class User extends Basecontroller
     {
         $data['userInfo'] = $this->user_model->getUserInfo($this->session->userdata['userId']);
         $data['userInfo']['providers'] = $this->user_infos->get_providers_by($this->session->userdata['userId']);
-        $data['userInfo']['infos'] = $this->user_infos->get_profil_infos($this->session->userdata['userId']);
+       // $data['userInfo']['infos'] = $this->user_infos->get_profil_infos($this->session->userdata['userId']);
         $this->global['pageTitle'] = 'Paramètre';
 
         $this->loadViews('drccash/user_config', $this->global, $data, null);

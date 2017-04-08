@@ -103,4 +103,20 @@ class Payment extends CI_Model
         return $this->db->select()->from($this->table)->where('reference', $ref)->get()->row();
     }
 
+    /**
+     * @param $id
+     * @param $option
+     * @return null
+     */
+    function get_option($id, $option)
+    {
+        $data = $this->payment_by_id($id);
+        if(!empty($data))
+        {
+            return isset(unserialize($data->options)[$option]) ? unserialize($data->options)[$option] : null;
+        }
+
+        return null;
+    }
+
 }

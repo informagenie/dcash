@@ -46,23 +46,21 @@ class Order extends BaseController
 
         $return['clientId'] = $vendor->userId;
         //Le vendeur peut-il recevoir les paiements ?
-        if(!$this->userinfo->can_received_payment($vendor->userId))
-        {
-            die('<h1>CET UTILISATEUR NE PEUT PAS RECEVOIR LE PAIMENT POUR L\'INSTANT</h1>') ;
+        if (!$this->userinfo->can_received_payment($vendor->userId)) {
+            die('<h1>CET UTILISATEUR NE PEUT PAS RECEVOIR LE PAIMENT POUR L\'INSTANT</h1>');
         }
 
         $return['numbers'] = $this->userinfo->get_providers_by($vendor->userId);
-        foreach($_GET as $item=>$v)
-        {
-            if(!in_array($item, $important)) {
+        foreach ($_GET as $item => $v) {
+            if (!in_array($item, $important)) {
                 $return['options'][$item] = $v;
-            }else{
+            } else {
                 $return[$item] = $v;
             }
         }
 
         //redirection dans la page de paiement
-        redirect(site_url('payment?process='.encrypte_data($return)));
+        redirect(site_url('payment?process=' . encrypte_data($return)));
 
     }
 
@@ -97,10 +95,11 @@ class Order extends BaseController
                     $options[decrypter($k)] = decrypter($v);
                 }
             }
-            if(empty($errors)) {
+
+            if (empty($errors)) {
 
                 $status = STATUS_WAIT;
-                if($base_params['__montant'] < total_items(get_grouped_item(get_items($options)))) {
+                if ($base_params['__montant'] < total_items(get_grouped_item(get_items($options)))) {
                     $status = STATUS_MISSING;
                 }
 
@@ -117,12 +116,13 @@ class Order extends BaseController
                 );
                 //TODO : Arranger le problème de l'enregistrement dans la base de données
                 if ($this->payment->addPayment($data)) {
-                    $this->load->view('drccash/order_success', array('redirect' => $options['return']));
+                    $this->woocommerce->change_order_state($options['cmd_id'], dc_to_wc_status(STATUS_WAIT));
+                    redirect($options['return']);
                 } else {
                     echo '<h1>Ce numéro de référence est déjà utilisé</h1><a href="' . $_SERVER['HTTP_REFERER'] . '">Retour</a>';
                 }
-            }else{
-                $this->load->view('drccash/errors', ['errors'=>$errors]);
+            } else {
+                $this->load->view('drccash/errors', ['errors' => $errors]);
             }
 
         }
@@ -137,50 +137,48 @@ class Order extends BaseController
         $errors = [];
         $datas = [];
         //Normalisation des données
-        foreach($_POST as $item=>$value)
-        {
+        foreach ($_POST as $item => $value) {
             //si item contient arobase (@)
-            if(preg_match("#%40#i", $item))
-            {
+            if (preg_match("#%40#i", $item)) {
                 $datas[keyer_array(urldecode($item))] = $value;
-            }else{
+            } else {
                 $datas[urldecode($item)] = $value;
             }
         }
 
-
-        if(!empty($_POST['items']))
-        {
-            $email = urldecode($datas['items']);
-            if(empty($_POST['__ref'])) $errors['warning'] = "Le numéro de référence invalide";
+        if (!empty($_POST['items'])) {
+            $email = urldecode(keyer_array($datas['items']));
+            if (empty($_POST['__ref'])) $errors['warning'] = "Le numéro de référence invalide";
             $data['id_paiement'] = $datas['__paiement'];
             $data['vendor_id'] = $this->user->get_user_by_email($email)->userId;
             $data['vendor_data'] = (filter_var($email, FILTER_VALIDATE_EMAIL)) ? $datas[$email] : $errors['warning'] = 'Un problème technique a été soulevé et nous sommes informé de celui-ci';
             $data['reference'] = $_POST['__ref'];
-
-
-            if(empty($this->user->getUserInfo($data['vendor_id'], true))) $errors['warning'] = "Ce vendeur n'existe pas encore dans digablo cash";
+            if (empty($this->user->getUserInfo($data['vendor_id'], true))) $errors['warning'] = "Ce vendeur n'existe pas encore dans digablo cash";
             //Le numéro de référence n'est-il pas encore utilisé ?
-            if(!empty($this->payment_infos->payment_options_by_reference($data['reference']))) $errors['warning'] = "Ce numéro de référence est déjà utilisé pour le paiement";
-            if(empty($errors))
-            {
+            if (!empty($this->payment_infos->payment_options_by_reference($data['reference']))) $errors['warning'] = "Ce numéro de référence est déjà utilisé pour le paiement";
+            if (empty($errors)) {
 
-                if($this->payment_infos->payment_already($data))
-                {
+                if ($this->payment_infos->payment_already($data)) {
                     $this->__alert_order('Vous avez déjà effectué le paiement de cet etablissement', 'warning');
                 }
-                if($this->payment_infos->add_options($data)){
-                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) == $this->payment->get($data['id_paiement'])->montant) ? STATUS_END : STATUS_PROCESS;
-                    $this->payment->updateOption(['status'=>$state], ['id'=>$data['id_paiement']]);
+                if ($this->payment_infos->add_options($data)) {
+                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) >= $this->payment->get($data['id_paiement'])->montant) ? STATUS_END : STATUS_PROCESS;
+
+                    $this->payment->updateOption(['status' => $state], ['id' => $data['id_paiement']]);
+                    try {
+                        $this->woocommerce->change_order_state($this->payment->get_option($data['id_paiement'], 'cmd_id'), dc_to_wc_status($state));
+                    } catch (Exception $e) {
+                        $this->__alert_order("Nous n'avons pas pu mettre à jour cette commande depuis wordpress ! Veuillez le faire manuellement", 'primary');
+                    }
                     $this->__alert_order('Paiement effectué avec succèss', 'success');
-                }else{
+                } else {
                     $this->__alert_order('Paiement echoué', 'danger');
                 }
-                echo "vous êtes là";
-            }else{
+
+            } else {
                 $this->__alert_order('Paiement echoué ! Vérifier que vous avez bien rempli les champs qu\'il faut', 'danger');
             }
-        }else{
+        } else {
             $this->__alert_order('Paiement echoué ! Vérifier que vous avez bien rempli les champs qu\'il faut', 'danger');
         }
 
@@ -197,8 +195,7 @@ class Order extends BaseController
         $user = $this->user->get_user_by_email(keyer_array(urldecode($email)));
 
 
-        if(empty($user))
-        {
+        if (empty($user)) {
             echo 'false';
             return;
         }
@@ -206,8 +203,7 @@ class Order extends BaseController
         $numbers = $this->userinfo->get_providers_by($user->userId);
 
         $returns = [];
-        foreach($numbers as $key=>$value)
-        {
+        foreach ($numbers as $key => $value) {
             $provider = $this->provider->get_by_name($value->info_name);
             $returns[$key]['nom'] = $provider->provider;
             $returns[$key]['desc'] = $provider->libelle;

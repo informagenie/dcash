@@ -155,7 +155,7 @@ if(!function_exists('dc_to_wc_status'))
 {
     function dc_to_wc_status($status)
     {
-        $states = [0=>'pending', 1=>'on-hold', 2=>'processing', 5=>'completeD'];
+        $states = [0=>'pending', 1=>'on-hold', 2=>'processing', 5=>'completed'];
         return isset($states[$status]) ? $states[$status] : $states[0];
     }
 }

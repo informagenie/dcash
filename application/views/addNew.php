@@ -18,7 +18,7 @@
                 
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">Enter User Details</h3>
+                        <h3 class="box-title">Information du compte</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
@@ -27,14 +27,14 @@
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="fname">Full Name</label>
+                                        <label for="fname">Intitulé</label>
                                         <input type="text" class="form-control required" id="fname" name="fname" maxlength="128">
                                     </div>
                                     
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email">Email address</label>
+                                        <label for="email">Email</label>
                                         <input type="text" class="form-control required email" id="email"  name="email" maxlength="128">
                                     </div>
                                 </div>
@@ -42,13 +42,13 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="password">Password</label>
+                                        <label for="password">Mot de passe</label>
                                         <input type="password" class="form-control required" id="password"  name="password" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="cpassword">Confirm Password</label>
+                                        <label for="cpassword">Confirmation mot de passe</label>
                                         <input type="password" class="form-control required equalTo" id="cpassword" name="cpassword" maxlength="10">
                                     </div>
                                 </div>
@@ -56,15 +56,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="mobile">Mobile Number</label>
+                                        <label for="mobile">Numéro de téléphone</label>
                                         <input type="text" class="form-control required digits" id="mobile" name="mobile" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="role">Role</label>
+                                        <label for="role">Type de compte</label>
                                         <select class="form-control required" id="role" name="role">
-                                            <option value="0">Select Role</option>
+                                            <option value="0">Selectionner Role</option>
                                             <?php
                                             if(!empty($roles))
                                             {
@@ -83,8 +83,8 @@
                         </div><!-- /.box-body -->
     
                         <div class="box-footer">
-                            <input type="submit" class="btn btn-primary" value="Submit" />
-                            <input type="reset" class="btn btn-default" value="Reset" />
+                            <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                            <input type="reset" class="btn btn-default" value="Réinitialiser" />
                         </div>
                     </form>
                 </div>

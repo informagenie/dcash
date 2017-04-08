@@ -35,10 +35,11 @@
                         <?php endforeach  ?>
                     </select>
                     <input  type="hidden" name="__paiement" value="<?= $options->id ?>">
+                    <?php debug($items) ?>
                     <?php foreach($items as $k=>$v): ?>
                         <input type="hidden" name="<?= urlencode($k) ?>" value='<?= serialize($v) ?>'>
                     <?php endforeach  ?>
-                    <input <?php if($options->status == STATUS_END) echo 'readonly disabled title="Les paiments pour cette commande ont été déjà effectués"';  ?> autocomplete="off" class="form-control" placeholder="Entrer le numéro de référence" required pattern="[a-zA-Z0-9]{10}" type="text" name="__ref">
+                    <input <?php if($options->status == STATUS_END) echo 'readonly disabled title="Les paiments pour cette commande ont été déjà effectués"';  ?> autocomplete="off" class="form-control" placeholder="Entrer le numéro de référence" maxlength="10" required pattern="[a-zA-Z0-9]{10}" type="text" name="__ref">
                     <button <?php if($options->status == STATUS_END) echo 'readonly disabled'  ?> type="submit" class="form-control btn btn-primary">Valide</button>
                 </form>
 

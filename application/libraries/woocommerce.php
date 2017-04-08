@@ -26,7 +26,7 @@ class Woocommerce
 
         try {
 
-            $this->client = new WC_API_Client("http://localhost/wordpress", $key_client, $key_secret, $options);
+            $this->client = new WC_API_Client(E_COMMERCE_HOST, $key_client, $key_secret, $options);
         } catch ( WC_API_Client_Exception $e ) {
 
             echo $e->getMessage() . PHP_EOL;
@@ -40,7 +40,7 @@ class Woocommerce
         }
     }
 
-    function change_order_status($order_id, $state)
+    function change_order_state($order_id, $state)
     {
         $this->client->orders->update_status($order_id, $state);
     }

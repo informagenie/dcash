@@ -98,7 +98,7 @@
                 <legend>En suite, entrer le numéro de référence reçu lors de la confirmation de votre transaction</legend>
                 <div class="form-group">
                     <label for="ref">Numéro de référence:</label>
-                    <input required pattern="[a-zA-Z0-9]{10}" class="form-control" type="text" name="<?= crypter('__ref')?>">
+                    <input autocomplete="off" maxlength="10" required pattern="[a-zA-Z0-9]{10}" class="form-control" type="text" name="<?= crypter('__ref')?>">
                 </div>
                 <input type="hidden" name="<?= crypter('__clientId') ?>" value="<?= crypter($clientId) ?>" />
                 <input type="hidden" name="<?= crypter('__token') ?>" value="<?= crypter($token) ?>" />
