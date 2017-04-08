@@ -35,7 +35,7 @@
                         <?php endforeach  ?>
                     </select>
                     <input  type="hidden" name="__paiement" value="<?= $options->id ?>">
-                    <?php debug($items) ?>
+
                     <?php foreach($items as $k=>$v): ?>
                         <input type="hidden" name="<?= urlencode($k) ?>" value='<?= serialize($v) ?>'>
                     <?php endforeach  ?>

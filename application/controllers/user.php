@@ -243,7 +243,7 @@ class User extends Basecontroller
                 $this->addNew();
             } else {
                 $name = ucwords(strtolower($this->input->post('fname')));
-                $email = $this->input->post('email');
+                $email = init_email($this->input->post('email'));
                 $password = $this->input->post('password');
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');
@@ -305,7 +305,7 @@ class User extends Basecontroller
                 $this->editOld($userId);
             } else {
                 $name = ucwords(strtolower($this->input->post('fname')));
-                $email = $this->input->post('email');
+                $email = init_email($this->input->post('email'));
                 $password = $this->input->post('password');
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');

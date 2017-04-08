@@ -60,5 +60,16 @@ function encoded_url($string)
 {
     return str_replace('.', '%2E', urlencode($string));
 }
-echo urldecode(encoded_url('jesus.com'));
+
+function init_email($email)
+{
+    $part_email = explode("@", $email);
+    $part_email[0] = str_replace('.', '', $part_email[0]);
+    return implode('@', $part_email);
+}
+
+$email = "merci.ngoma@gmail.com";
+
+$part_email = explode("@", $email);
+print_r(init_email($email));
 ?>

@@ -476,3 +476,13 @@ if(!function_exists('encoded_url'))
         return str_replace('.', '%2E', urlencode($string));
     }
 }
+
+if(!function_exists('init_email'))
+{
+    function init_email($email)
+    {
+        $part_email = explode("@", $email);
+        $part_email[0] = str_replace('.', '', $part_email[0]);
+        return implode('@', $part_email);
+    }
+}
