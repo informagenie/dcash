@@ -119,4 +119,19 @@ class Payment extends CI_Model
         return null;
     }
 
+    function get_by_commande($cmd)
+    {
+        $payment = $this->db->select()->from($this->table)->get()->result();
+
+        foreach($payment as $pay=>$value)
+        {
+            if(unserialize($value->options)['cmd_id'] == $cmd)
+            {
+                return $value;
+            }
+        }
+        return false;
+
+    }
+
 }

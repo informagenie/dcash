@@ -79,16 +79,20 @@ class User extends Basecontroller
         $this->global['pageTitle'] = site_title('Recherche par référence');
         $data['options'] = [];
         if (isset($_REQUEST['__ref'])) {
+            $id_payment = !empty($pay = $this->payment->get_by_commande($_REQUEST['__ref'])) ? $pay->id : null;
             $data['options'] = $this->payment_infos->payment_options_by_reference(html_escape($_REQUEST['__ref']));
+            $data['options'] = !empty($data['options']) ? $data['options'] : $this->payment_infos->get_by_payment_and_client($id_payment, $this->session->userdata('userId'));
         }
 
         if ($data['options'] != null) {
+            $data['payment_options'] = $this->payment->payment_by_id($data['options']->id_paiement);
             if (!($data['options']->vendor_id == $this->session->userdata['userId'] or $this->global['role'] == ROLE_ADMIN)) {
                 $this->loadThis();
                 return;
             }
         }
-        $data['payment_options'] = $this->payment->payment_by_id($data['options']->id_paiement);
+
+
         $this->loadViews("check", $this->global, $data, null);
     }
 
@@ -168,7 +172,7 @@ class User extends Basecontroller
     {
         $data['userInfo'] = $this->user_model->getUserInfo($this->session->userdata['userId']);
         $data['userInfo']['providers'] = $this->user_infos->get_providers_by($this->session->userdata['userId']);
-       // $data['userInfo']['infos'] = $this->user_infos->get_profil_infos($this->session->userdata['userId']);
+        // $data['userInfo']['infos'] = $this->user_infos->get_profil_infos($this->session->userdata['userId']);
         $this->global['pageTitle'] = 'Paramètre';
 
         $this->loadViews('drccash/user_config', $this->global, $data, null);

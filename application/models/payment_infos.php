@@ -114,6 +114,20 @@ class Payment_infos extends CI_Model
         return $this->db->where($contraine)->update($this->table);
     }
 
+    function get_by_payment_and_client($id_payment, $client_id)
+    {
+        $datas = $this->get_by_payment($id_payment);
+
+        foreach($datas as $data)
+        {
+            if($data->vendor_id == $client_id)
+            {
+                return $data;
+            }
+        }
+        return null;
+    }
+
     function payment_for_ready($ready)
     {
         return $this->db->select()->from($this->table)->where('ready', $ready)->get()->result();
