@@ -60,7 +60,7 @@ class Login extends CI_Controller
         }
         else
         {
-            $email = $this->input->post('email');
+            $email = init_email($this->input->post('email'));
             $password = $this->input->post('password');
             
             $result = $this->login_model->loginMe($email, $password);
@@ -83,7 +83,7 @@ class Login extends CI_Controller
             }
             else
             {
-                $this->session->set_flashdata('error', 'Email or password mismatch');
+                $this->session->set_flashdata('error', 'Email ou mot de passe incorrect');
                 
                 redirect('/login');
             }
@@ -115,7 +115,7 @@ class Login extends CI_Controller
         }
         else 
         {
-            $email = $this->input->post('login_email');
+            $email = init_email($this->input->post('login_email'));
             
             if($this->user_model->checkEmailExist($email))
             {
