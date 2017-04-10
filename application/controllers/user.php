@@ -15,8 +15,9 @@ class User extends Basecontroller
     /** This function used to load the first screen of the user */
     public function index()
     {
+        if(empty($_GET['sort'])) redirect('dashboard?sort=wait');
         $this->global['pageTitle'] = site_title('Dashboard');
-        $sort = !empty($_GET['sort']) ? $_GET['sort'] : 'all';
+        $sort = $_GET['sort'];
         $price = [];
         $status = [];
         //Est-il un administrateur ? Parce que un admin doit tout voir

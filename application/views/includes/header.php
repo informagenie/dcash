@@ -39,7 +39,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="skin-yellow sidebar sidebar-collapse">
+<body class="skin-<?= ($role == ROLE_ADMIN)? "blue" : "yellow" ?> sidebar sidebar-collapse">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
