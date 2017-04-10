@@ -12,66 +12,66 @@
             <div data-toggle="dismiss" class="alert-dismissible alert alert-success">Vous êtes en mode Administrateur.
                 Vous pouvez tout voir mais pas modifier ou agir pour l'instant
             </div>
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h3><?= (int)__($price['process']) ?>$</h3>
-
-                        <p>En processus</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-bag"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Plus d'informations <i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3><?= (isset($price['success'])) ? (int)__($price['success']) : (int)__($price['end']) ?>
-                            $</h3>
-
-                        <p>Vérifiés</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Plus d'informations <i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3><?= (int)__($price['wait']) ?>$</h3>
-
-                        <p>En attente</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
-                    </div>
-                    <a href="<?php echo base_url(); ?>userListing" class="small-box-footer">Plus d'informations<i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3><?= (int)__($price['missing']) ?>$</h3>
-
-                        <p>Manquants</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">Plus d'informations<i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div><!-- ./col -->
+<!--            <div class="col-lg-3 col-xs-6">-->
+<!--                <!-- small box -->
+<!--                <div class="small-box bg-aqua">-->
+<!--                    <div class="inner">-->
+<!--                        <h3>--><?//= (int)__($price['process']) ?><!--$</h3>-->
+<!---->
+<!--                        <p>En processus</p>-->
+<!--                    </div>-->
+<!--                    <div class="icon">-->
+<!--                        <i class="ion ion-bag"></i>-->
+<!--                    </div>-->
+<!--                    <a href="#" class="small-box-footer">Plus d'informations <i-->
+<!--                            class="fa fa-arrow-circle-right"></i></a>-->
+<!--                </div>-->
+<!--            </div><!-- ./col -->
+<!--            <div class="col-lg-3 col-xs-6">-->
+<!--                <!-- small box -->
+<!--                <div class="small-box bg-green">-->
+<!--                    <div class="inner">-->
+<!--                        <h3>--><?//= (isset($price['success'])) ? (int)__($price['success']) : (int)__($price['end']) ?>
+<!--                            $</h3>-->
+<!---->
+<!--                        <p>Vérifiés</p>-->
+<!--                    </div>-->
+<!--                    <div class="icon">-->
+<!--                        <i class="ion ion-stats-bars"></i>-->
+<!--                    </div>-->
+<!--                    <a href="#" class="small-box-footer">Plus d'informations <i-->
+<!--                            class="fa fa-arrow-circle-right"></i></a>-->
+<!--                </div>-->
+<!--            </div><!-- ./col -->
+<!--            <div class="col-lg-3 col-xs-6">-->
+<!--                <!-- small box -->
+<!--                <div class="small-box bg-yellow">-->
+<!--                    <div class="inner">-->
+<!--                        <h3>--><?//= (int)__($price['wait']) ?><!--$</h3>-->
+<!---->
+<!--                        <p>En attente</p>-->
+<!--                    </div>-->
+<!--                    <div class="icon">-->
+<!--                        <i class="ion ion-person-add"></i>-->
+<!--                    </div>-->
+<!--                    <a href="--><?php //echo base_url(); ?><!--userListing" class="small-box-footer">Plus d'informations<i-->
+<!--                            class="fa fa-arrow-circle-right"></i></a>-->
+<!--                </div>-->
+<!--            </div><!-- ./col -->
+<!--            <div class="col-lg-3 col-xs-6">-->
+<!--                <!-- small box -->
+<!--                <div class="small-box bg-red">-->
+<!--                    <div class="inner">-->
+<!--                        <h3>--><?//= (int)__($price['missing']) ?><!--$</h3>-->
+<!---->
+<!--                        <p>Manquants</p>-->
+<!--                    </div>-->
+<!--                    <div class="icon">-->
+<!--                        <i class="ion ion-pie-graph"></i>-->
+<!--                    </div>-->
+<!--                <a href="#" class="small-box-footer">Plus d'informations<i class="fa fa-arrow-circle-right"></i></a>-->
+<!--                </div><!-- ./col -->
+<!--            </div>-->
         </div>
         <div class="row">
             <div class="box box-primary">

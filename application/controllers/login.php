@@ -77,8 +77,8 @@ class Login extends CI_Controller
                                     );
                                     
                     $this->session->set_userdata($sessionArray);
-                    
-                    redirect('/dashboard');
+                    $redirect = !empty($_GET['__return']) ? urldecode($_GET['__return']) : '/dashboard';
+                    redirect($redirect);
                 }
             }
             else
