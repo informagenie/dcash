@@ -122,10 +122,18 @@ class Payment extends CI_Model
     function get_by_commande($cmd)
     {
         $payment = $this->db->select()->from($this->table)->get()->result();
-
+        $key = "cmd_id";
         foreach($payment as $pay=>$value)
         {
-            if(unserialize($value->options)['cmd_id'] == $cmd)
+            if(is_array($cmd))
+            {
+                foreach($cmd as $k=>$v)
+                {
+                    $key = $k;
+                    $cmd = $v;
+                }
+            }
+            if(unserialize($value->options)[$key] == $cmd)
             {
                 return $value;
             }

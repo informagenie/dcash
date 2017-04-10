@@ -80,6 +80,10 @@ class User extends Basecontroller
         $data['options'] = [];
         if (isset($_REQUEST['__ref'])) {
             $id_payment = !empty($pay = $this->payment->get_by_commande($_REQUEST['__ref'])) ? $pay->id : null;
+            if(empty($id_payment))
+            {
+                $id_payment = (!empty($pay = $this->payment->get_by_commande(['invoice'=>html_escape($_REQUEST['__ref'])]))) ? $pay->id : null;
+            }
             $data['options'] = $this->payment_infos->payment_options_by_reference(html_escape($_REQUEST['__ref']));
             $data['options'] = !empty($data['options']) ? $data['options'] : $this->payment_infos->get_by_payment_and_client($id_payment, $this->session->userdata('userId'));
         }

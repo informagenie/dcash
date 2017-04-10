@@ -151,18 +151,18 @@ class Order extends BaseController
             if (empty($_POST['__ref'])) $errors['warning'] = "Le numéro de référence invalide";
             $data['id_paiement'] = $datas['__paiement'];
             $data['vendor_id'] = $this->user->get_user_by_email($email)->userId;
+
             $data['vendor_data'] = (filter_var($email, FILTER_VALIDATE_EMAIL)) ? $datas[$email] : $errors['warning'] = 'Un problème technique a été soulevé et nous sommes informé de celui-ci';
             $data['reference'] = $_POST['__ref'];
             if (empty($this->user->getUserInfo($data['vendor_id'], true))) $errors['warning'] = "Ce vendeur n'existe pas encore dans digablo cash";
             //Le numéro de référence n'est-il pas encore utilisé ?
             if (!empty($this->payment_infos->payment_options_by_reference($data['reference']))) $errors['warning'] = "Ce numéro de référence est déjà utilisé pour le paiement";
             if (empty($errors)) {
-
                 if ($this->payment_infos->payment_already($data)) {
                     $this->__alert_order('Vous avez déjà effectué le paiement de cet etablissement', 'warning');
                 }
                 if ($this->payment_infos->add_options($data)) {
-                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) >= $this->payment->get($data['id_paiement'])->montant) ? STATUS_END : STATUS_PROCESS;
+                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) == total_items(get_grouped_item(get_items(unserialize($this->payment->get($data['id_paiement'])->options))))) ? STATUS_END : STATUS_PROCESS;
 
                     $this->payment->updateOption(['status' => $state], ['id' => $data['id_paiement']]);
                     try {

@@ -23,7 +23,7 @@ $_REQUEST = array_map('htmlspecialchars', $_REQUEST);
             <div class="box box-primary">
                 <div class="box-header">
                     <div class="col-md-4">
-                        <div class="box-title">Référence : #<?= $options->reference ?></div>
+                        <div class="box-title">Référence : #<?= strtoupper($options->reference) ?></div>
                     </div>
                     <div class="col-md-4">
                         <span
