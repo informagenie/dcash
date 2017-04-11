@@ -16,6 +16,7 @@ class Order extends BaseController
     {
         parent::__construct();
 
+        $this->load->helpers('cookie');
         $this->load->model('user_infos', 'userinfo');
         $this->load->model('user_model', 'user');
         $this->load->model(array('provider', 'payment', 'payment_infos'));
@@ -25,16 +26,18 @@ class Order extends BaseController
     function index()
     {
         $important = array('__email', '__montant', '__commande', '__devise', '__return');
-
-        $return['token'] = uniqid('drccash', true);
-
-//        if (empty($_SERVER['HTTP_REFERER'])) //TODO : Enlever la négation pour que ça soit mieux
-//        {
-//            die('<h1>VOUS N\'AVEZ PAS ACCESS A CETTE PAGE</h1>');
-//            return;
-//        }
-
         $errors = [];
+        $token = $return['token'] = uniqid('dccash');
+
+        if (!get_cookie('__')) {
+            set_cookie('__', $token, "1800");
+        }
+
+        if (empty($_SERVER['HTTP_REFERER'])) //TODO : Enlever la négation pour que ça soit mieux
+        {
+            die('<h1>VOUS N\'AVEZ PAS ACCESS A CETTE PAGE</h1>');
+        }
+
 
         if (!isset($_GET['__email']) && !isset($_GET['__return']) && !isset($_GET['__commande'])) {
             die('<h1>COMMANDE INVALIDE</h1>');
@@ -67,6 +70,18 @@ class Order extends BaseController
     function payment()
     {
         $data = decrypte_data($_GET['process']);
+        $token_client = !empty(get_cookie('__')) ? get_cookie('__') : null;
+        $token_server = !empty($data['token']) ? $data['token'] : "";
+        if ($token_client !== $token_server) {
+            try {
+                @$this->woocommerce->change_order_state($data['options']['cmd_id'], 'cancelled');
+            }catch (Exception $e)
+            {
+
+            }
+            die("La session de ce paiment est expirée");
+        }
+
         $this->load->view('drccash/order', decrypte_data($_GET['process']));
     }
 
@@ -117,6 +132,7 @@ class Order extends BaseController
                 //TODO : Arranger le problème de l'enregistrement dans la base de données
                 if ($this->payment->addPayment($data)) {
                     $this->woocommerce->change_order_state($options['cmd_id'], dc_to_wc_status(STATUS_WAIT));
+                    delete_cookie('__');
                     redirect($options['return']);
                 } else {
                     echo '<h1>Ce numéro de référence est déjà utilisé</h1><a href="' . $_SERVER['HTTP_REFERER'] . '">Retour</a>';
