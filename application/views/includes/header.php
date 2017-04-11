@@ -130,6 +130,12 @@
                 <?php if($role == ROLE_ADMIN OR $role == ROLE_VENDOR): ?>
                     <li class="treeview">
                         <a href="<?= site_url('user/config') ?>" >
+                            <i class="fa fa-phone"></i>
+                            <span>Paiment mobile</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="<?= site_url('editOld/'.get_instance()->session->userdata('userId')) ?>" >
                             <i class="fa fa-wrench"></i>
                             <span>Parametre</span>
                         </a>

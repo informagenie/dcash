@@ -17,8 +17,8 @@ class Woocommerce
 
     function __construct()
     {
-        $key_client = "ck_8cfca8308409322d16308dbd85bdf6309dfcb572";
-        $key_secret = "cs_90897f88fb986ec630244b8cba02b337c792c243";
+        $key_client = "ck_71b13a65b5ebf4c2c3016ff8db6ab8df3672bc06";
+        $key_secret = "cs_4be2df69db3996c4254f874cc80c6398513caf75";
 
         $options = array(
             'ssl_verify'      => false,

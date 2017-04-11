@@ -108,7 +108,7 @@ class Order extends BaseController
                     'client' => (!empty($base_params['__clientId'])) ? $base_params['__clientId'] : null,
                     'montant' => (!empty($base_params['__montant'])) ? $base_params['__montant'] : null,
                     'devise' => (!empty($base_params['__devise'])) ? $base_params['__devise'] : DEVISE_USD,
-                    'reference' => (!empty($base_params['__ref'])) ? $base_params['__ref'] : null,
+                    'reference' => (!empty($base_params['__ref'])) ? strtoupper($base_params['__ref']) : null,
                     'options' => serialize($options),
                     'status' => $status,
                     'provider' => what_service($base_params['__phone_number']),
@@ -192,6 +192,7 @@ class Order extends BaseController
      */
     function checkusernumbers($email)
     {
+        $this->isLoggedIn();
         $user = $this->user->get_user_by_email(keyer_array(urldecode($email)));
 
 

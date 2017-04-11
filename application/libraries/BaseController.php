@@ -87,7 +87,7 @@ class BaseController extends CI_Controller
      */
     function loadThis()
     {
-        $this->global ['pageTitle'] = 'CodeInsect : Access Denied';
+        $this->global ['pageTitle'] = site_title('Accès interdit');
 
         $this->load->view('includes/header', $this->global);
         $this->load->view('access');

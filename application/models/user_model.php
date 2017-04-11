@@ -63,13 +63,18 @@ class User_model extends CI_Model
     
     /**
      * This function is used to get the user roles information
+     *
+     * @param bool $admin : si le role administrateur aussi soit inclus
      * @return array $result : This is result of the query
      */
-    function getUserRoles()
+    function getUserRoles($admin = false)
     {
         $this->db->select('roleId, role');
         $this->db->from('tbl_roles');
-        $this->db->where('roleId !=', 1);
+        if($admin != true)
+        {
+            $this->db->where('roleId !=', 1);
+        }
         $query = $this->db->get();
         
         return $query->result();
@@ -122,7 +127,7 @@ class User_model extends CI_Model
         $this->db->select('userId, name, email, mobile, roleId');
         $this->db->from('tbl_users');
         $this->db->where('isDeleted', 0);
-		$this->db->where('roleId !=', 1);
+		//$this->db->where('roleId !=', 1);
         $this->db->where('userId', $userId);
         $query = $this->db->get();
         

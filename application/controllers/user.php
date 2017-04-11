@@ -15,7 +15,7 @@ class User extends Basecontroller
     /** This function used to load the first screen of the user */
     public function index()
     {
-        if(empty($_GET['sort'])) redirect('dashboard?sort=wait');
+        if (empty($_GET['sort'])) redirect('dashboard?sort=wait');
         $this->global['pageTitle'] = site_title('Dashboard');
         $sort = $_GET['sort'];
         $price = [];
@@ -80,12 +80,12 @@ class User extends Basecontroller
         $this->global['pageTitle'] = site_title('Recherche par référence');
         $data['options'] = [];
         if (isset($_REQUEST['__ref'])) {
-            $id_payment = !empty($pay = $this->payment->get_by_commande($_REQUEST['__ref'])) ? $pay->id : null;
-            if(empty($id_payment))
-            {
-                $id_payment = (!empty($pay = $this->payment->get_by_commande(['invoice'=>html_escape($_REQUEST['__ref'])]))) ? $pay->id : null;
+            $ref = str_replace(array('#'), '', urldecode($_REQUEST['__ref']));
+            $id_payment = !empty($pay = $this->payment->get_by_commande(urldecode($ref))) ? $pay->id : null;
+            if (empty($id_payment)) {
+                $id_payment = (!empty($pay = $this->payment->get_by_commande(['invoice' => html_escape(urldecode($ref))]))) ? $pay->id : null;
             }
-            $data['options'] = $this->payment_infos->payment_options_by_reference(html_escape($_REQUEST['__ref']));
+            $data['options'] = $this->payment_infos->payment_options_by_reference(html_escape(urldecode($ref)));
             $data['options'] = !empty($data['options']) ? $data['options'] : $this->payment_infos->get_by_payment_and_client($id_payment, $this->session->userdata('userId'));
         }
 
@@ -112,7 +112,7 @@ class User extends Basecontroller
 //            $this->__alert_order($exception->getMessage(), 'danger', base_url());
 //        }
 
-        if (!$data['options'] = $this->payment->paymentBy(html_escape($reference))) {
+        if (!$data['options'] = $this->payment->paymentBy(html_escape(urldecode($reference)))) {
             $this->pageNotFound();
             return;
         }
@@ -160,7 +160,7 @@ class User extends Basecontroller
         if (!empty($_POST['mpesa']) || !empty($_POST['airtel_money']) || !empty($_POST['orange_money'])) {
             $success = false;
             foreach ($_POST as $name => $value) {
-                if (is_valid_number($value)) {
+                if (is_valid_number($value) || empty($value)) {
                     $this->user_infos->update($this->session->userdata('userId'), $name, $value);
                 }
             }
@@ -296,50 +296,48 @@ class User extends Basecontroller
      */
     function editUser()
     {
-        if ($this->isAdmin() == TRUE) {
-            $this->loadThis();
-        } else {
-            $this->load->library('form_validation');
+        $this->load->library('form_validation');
+        $redirect = 'editOld';
+        $userId = $this->input->post('userId');
 
-            $userId = $this->input->post('userId');
-
-            $this->form_validation->set_rules('fname', 'Full Name', 'trim|required|max_length[128]|xss_clean');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean|max_length[128]');
-            $this->form_validation->set_rules('password', 'Password', 'matches[cpassword]|max_length[20]');
-            $this->form_validation->set_rules('cpassword', 'Confirm Password', 'matches[password]|max_length[20]');
+        $this->form_validation->set_rules('fname', 'Full Name', 'trim|required|max_length[128]|xss_clean');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean|max_length[128]');
+        $this->form_validation->set_rules('password', 'Password', 'matches[cpassword]|max_length[20]');
+        $this->form_validation->set_rules('cpassword', 'Confirm Password', 'matches[password]|max_length[20]');
+        if ($this->global['role'] == ROLE_ADMIN) {
+            $redirect = 'userListing';
             $this->form_validation->set_rules('role', 'Role', 'trim|required|numeric');
-            $this->form_validation->set_rules('mobile', 'Mobile Number', 'required|min_length[10]|xss_clean');
+        }
+        $this->form_validation->set_rules('mobile', 'Mobile Number', 'required|min_length[10]|xss_clean');
 
-            if ($this->form_validation->run() == FALSE) {
-                $this->editOld($userId);
+        if ($this->form_validation->run() == FALSE) {
+            $this->editOld($userId);
+        } else {
+            $name = ucwords(strtolower($this->input->post('fname')));
+            $email = init_email($this->input->post('email'));
+            $password = $this->input->post('password');
+            $roleId = $this->input->post('role');
+            $mobile = $this->input->post('mobile');
+
+            $userInfo = array();
+
+            if (empty($password)) {
+                $userInfo = array('email' => $email, 'roleId' => $roleId, 'name' => $name,
+                    'mobile' => $mobile, 'updatedBy' => $this->vendorId, 'updatedDtm' => date('Y-m-d H:i:sa'));
             } else {
-                $name = ucwords(strtolower($this->input->post('fname')));
-                $email = init_email($this->input->post('email'));
-                $password = $this->input->post('password');
-                $roleId = $this->input->post('role');
-                $mobile = $this->input->post('mobile');
-
-                $userInfo = array();
-
-                if (empty($password)) {
-                    $userInfo = array('email' => $email, 'roleId' => $roleId, 'name' => $name,
-                        'mobile' => $mobile, 'updatedBy' => $this->vendorId, 'updatedDtm' => date('Y-m-d H:i:sa'));
-                } else {
-                    $userInfo = array('email' => $email, 'password' => getHashedPassword($password), 'roleId' => $roleId,
-                        'name' => ucwords($name), 'mobile' => $mobile, 'updatedBy' => $this->vendorId,
-                        'updatedDtm' => date('Y-m-d H:i:s'));
-                }
-
-                $result = $this->user_model->editUser($userInfo, $userId);
-
-                if ($result == true) {
-                    $this->session->set_flashdata('success', 'User updated successfully');
-                } else {
-                    $this->session->set_flashdata('error', 'User updation failed');
-                }
-
-                redirect('userListing');
+                $userInfo = array('email' => $email, 'password' => getHashedPassword($password), 'roleId' => $roleId,
+                    'name' => ucwords($name), 'mobile' => $mobile, 'updatedBy' => $this->vendorId,
+                    'updatedDtm' => date('Y-m-d H:i:s'));
             }
+
+            $result = $this->user_model->editUser($userInfo, $userId);
+
+            if ($result == true) {
+                $this->__alert_order('Modification effectuée avec succès', 'success', $redirect);
+            } else {
+                $this->__alert_order('Enregistrement echoué', 'danger', $redirect);
+            }
+
         }
     }
 
@@ -349,20 +347,21 @@ class User extends Basecontroller
      */
     function editOld($userId = NULL)
     {
-        if ($this->isAdmin() == TRUE || $userId == 1) {
-            $this->loadThis();
-        } else {
-            if ($userId == null) {
-                redirect('userListing');
-            }
-
-            $data['roles'] = $this->user_model->getUserRoles();
-            $data['userInfo'] = $this->user_model->getUserInfo($userId);
-
-            $this->global['pageTitle'] = site_title('Editer l\'utilsateur');
-
-            $this->loadViews("editOld", $this->global, $data, NULL);
+        if ($this->global['role'] != ROLE_ADMIN) {
+            $userId = $this->session->userdata('userId');
         }
+
+        $data['userInfo'] = $this->user_model->getUserInfo($userId);
+
+        if ($userId == null or empty($data['userInfo'])) {
+            $this->__alert_order('Erreur : Cet utilisateur n\'existe pas', 'danger', site_url('userListing'));
+        }
+
+        $data['roles'] = $this->user_model->getUserRoles(true);
+
+        $this->global['pageTitle'] = site_title('Editer l\'utilsateur');
+
+        $this->loadViews("editOld", $this->global, $data, NULL);
     }
 
     /**

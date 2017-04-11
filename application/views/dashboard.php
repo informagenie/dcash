@@ -114,10 +114,10 @@
                                 foreach ($payments[$sort] as $payment): ?>
                                     <tr>
                                         <td>
-                                            #<a href="<?= site_url('commande/' . $payment->reference) ?>"><?= $payment->reference ?></a>
+                                            #<a href="<?= site_url('commande/' . urlencode($payment->reference)) ?>"><?= $payment->reference ?></a>
                                         </td>
                                         <td><?= format_date($payment->date_paiement) ?></td>
-                                        <td><?= $payment->montant ?></td>
+                                        <td><?= $payment->montant ?><?= devise_name(DEVISE_DEFAULT) ?></td>
                                         <td><span
                                                 style="color: <?= status_name($payment->status)['color'] ?>"> <?= strtoupper(status_name($payment->status)['name']) ?></span>
                                         </td>
@@ -165,8 +165,8 @@
                         <tr>
                             <td><?= format_date($value->date_created) ?></td>
                             <td><?= $value->reference ?></td>
-                            <td><?= total_item(unserialize($value->vendor_data)) ?>$</td>
-                            <td><a href="<?= site_url('check?__ref=' . $value->reference) ?>">Plus d'informations</a>
+                            <td><?= total_item(unserialize($value->vendor_data)) ?><?= devise_name(DEVISE_DEFAULT) ?></td>
+                            <td><a href="<?= site_url('check?__ref=' . urlencode($value->reference)) ?>">Plus d'informations</a>
                             </td>
                         </tr>
                     <?php endforeach ?>

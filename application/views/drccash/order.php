@@ -89,7 +89,7 @@
                 <div class="form-group">
                     <label for="montant">Combien avez-vous envoyé ?</label>
                     <div class="input-group">
-                        <input class="form-control" value="<?= $__montant ?>" type="text" name="<?= crypter('__montant') ?>" id="">
+                        <input class="form-control" readonly value="<?= $__montant ?>" type="text" name="<?= crypter('__montant') ?>" id="">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-usd"></span>
                         </span>

@@ -104,8 +104,8 @@ $_REQUEST = array_map('htmlspecialchars', $_REQUEST);
                 <?php elseif (empty($_REQUEST['__ref'])): ?>
                     <div class="alert alert-warning">Vous devriez taper quelque chose</div>
                 <?php else: ?>
-                    <div class="alert alert-danger"><?= $_REQUEST['__ref'] ?> n'est pas reconnu comme étant un numéro de
-                        référence
+                    <div class="alert alert-danger">
+                        Aucun resultat trouvé pour votre requête actuellement. Veuillez réssayer plus tard
                     </div>
                 <?php endif ?>
             </div>
