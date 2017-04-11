@@ -201,15 +201,19 @@ class Order extends BaseController
         }
 
         $numbers = $this->userinfo->get_providers_by($user->userId);
+        if(empty($numbers))
+        {
+            echo 'false';
+            return;
+        }
 
         $returns = [];
-        foreach ($numbers as $key => $value) {
+        foreach($numbers as $key => $value) {
             $provider = $this->provider->get_by_name($value->info_name);
             $returns[$key]['nom'] = $provider->provider;
             $returns[$key]['desc'] = $provider->libelle;
             $returns[$key]['number'] = $value->info_value;
         }
-        header('Content-Type', 'text/json');
         echo json_encode($returns);
     }
 
