@@ -148,12 +148,13 @@ class Order extends BaseController
 
         if (!empty($_POST['items'])) {
             $email = urldecode(keyer_array($datas['items']));
-            if (empty($_POST['__ref'])) $errors['warning'] = "Le numéro de référence invalide";
+
+            if (empty($_POST['__ref']) or strlen($_POST['__ref']) < 10) $errors['warning'] = "Le numéro de référence invalide";
             $data['id_paiement'] = $datas['__paiement'];
             $data['vendor_id'] = $this->user->get_user_by_email($email)->userId;
 
             $data['vendor_data'] = (filter_var($email, FILTER_VALIDATE_EMAIL)) ? $datas[$email] : $errors['warning'] = 'Un problème technique a été soulevé et nous sommes informé de celui-ci';
-            $data['reference'] = $_POST['__ref'];
+            $data['reference'] = strtoupper($_POST['__ref']);
             if (empty($this->user->getUserInfo($data['vendor_id'], true))) $errors['warning'] = "Ce vendeur n'existe pas encore dans digablo cash";
             //Le numéro de référence n'est-il pas encore utilisé ?
             if (!empty($this->payment_infos->payment_options_by_reference($data['reference']))) $errors['warning'] = "Ce numéro de référence est déjà utilisé pour le paiement";

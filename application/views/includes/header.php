@@ -53,7 +53,7 @@
         </span>
         <?php if(isset($_SESSION['message'])):  ?>
             <?php foreach($_SESSION['message'] as $type=>$message):  ?>
-                <span style="position: absolute; left: 50%; z-index: 9999999;" class="notif alert alert-<?= $type ?>">
+                <span role="alert" data-dismiss="alert" style="position: absolute; left: 50%; z-index: 9999999;" class="notif alert alert-<?= $type ?>">
                     <?= $message  ?>
                 </span>
             <?php endforeach  ?>
