@@ -1,3 +1,10 @@
+<?php
+if(!empty($_POST))
+{
+    echo json_encode($_POST);
+    return;
+}
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -22,6 +29,8 @@
 </html>
 
 <?php
+
+
 function get_items($data)
 {
     $items = [];
@@ -72,4 +81,28 @@ $email = "merci.ngoma@gmail.com";
 
 $part_email = explode("@", $email);
 print_r(init_email($email));
+
 ?>
+
+<form action="./test.php" id="formulaire">
+    <input type="text" name="nom">
+    <input type="text" name="postnom" id="">
+    <input type="submit" value="enregistrer">
+</form>
+<script src="assets/js/jQuery-2.1.4.min.js"></script>
+<script>
+$(function(){
+    $('#formulaire').find("input[type='submit']").on('click', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: 'test.php',
+            data: $(this).parent().serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function($data){
+                alert($data);
+            }
+        })
+    });
+})
+</script>
