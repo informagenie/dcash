@@ -84,11 +84,11 @@ if(!function_exists('convert_status'))
         );
         if(is_numeric($n))
         {
-            if(isset($in_int[$n])) return $in_int[$n];
+            if(empty($in_stirng[$n])) return $in_string[$n];
             return $in_string[0];
         }
-        if(isset($in_string[$n])) return $in_string[$n];
-        return $in_string[0];
+        if(empty($in_int[$n])) return $in_int[$n];
+        return $in_int[0];
 
     }
 }
