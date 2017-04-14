@@ -20,7 +20,7 @@ class sendEmail extends CI_Controller
         $this->email->from('admin@digbalo.com', 'Digablo');
         $this->email->to($order['fact_email']);
         $this->email->subject("Etat de la commande ". $order['cmd_id']);
-        $message = $this->viewEmail('template_'. convert_status(STATUS_PROCESS),$order);
+        $message = $this->viewEmail('template_'. convert_status($state),$order);
         $this->email->message($message);
         return $this->email->send();
 

@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="762f7539-f1c0-472b-8a54-01f32ade6b3a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/footer.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/header.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/template_end.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/template_missing.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/template_process.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/template_success.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/email_template/template_wait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/order.php" afterPath="$PROJECT_DIR$/application/controllers/order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/helpers/cias_helper.php" afterPath="$PROJECT_DIR$/application/helpers/cias_helper.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/libraries/sendEmail.php" afterPath="$PROJECT_DIR$/application/libraries/sendEmail.php" />
     </list>
     <ignored path="connexion.iws" />
@@ -100,8 +90,8 @@
       <file leaf-file-name="sendEmail.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/libraries/sendEmail.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6343115">
-              <caret line="21" column="68" selection-start-line="21" selection-start-column="68" selection-end-line="21" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.6726862">
+              <caret line="22" column="70" selection-start-line="22" selection-start-column="70" selection-end-line="22" selection-end-column="70" />
               <folding>
                 <element signature="e#6#101#0#PHP" expanded="true" />
               </folding>
@@ -1185,8 +1175,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/libraries/sendEmail.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6343115">
-          <caret line="21" column="68" selection-start-line="21" selection-start-column="68" selection-end-line="21" selection-end-column="68" />
+        <state vertical-scroll-proportion="0.6726862">
+          <caret line="22" column="70" selection-start-line="22" selection-start-column="70" selection-end-line="22" selection-end-column="70" />
           <folding>
             <element signature="e#6#101#0#PHP" expanded="true" />
           </folding>
