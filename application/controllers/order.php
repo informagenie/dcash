@@ -90,8 +90,6 @@ class Order extends BaseController
         $base_params = [];
         $options = [];
 
-        debug(apache_request_headers());
-        exit();
         $add_manually_in_form = array('__ref', '__devise', '__montant', '__phone_number');
         if (!empty(['HTTP_REFERER'])) //TODO : Ajouter la négation pour que ça soit mieux
         {
