@@ -30,20 +30,6 @@ if(!empty($_POST))
 
 <?php
 
-
-function get_items($data)
-{
-    $items = [];
-    foreach($data as $item=>$value)
-    {
-        if(preg_match('#^item_#i', $item))
-        {
-            $items[$item] = $value;
-        }
-    }
-    return $items;
-}
-
 function arrange($data)
 {
     $items = [];
