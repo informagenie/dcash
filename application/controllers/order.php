@@ -20,6 +20,7 @@ class Order extends BaseController
         $this->load->model('user_infos', 'userinfo');
         $this->load->model('user_model', 'user');
         $this->load->model(array('provider', 'payment', 'payment_infos'));
+        $this->load->library('sendEmail');
 
     }
 
@@ -179,11 +180,12 @@ class Order extends BaseController
                     $this->__alert_order('Vous avez déjà effectué le paiement de cet etablissement', 'warning');
                 }
                 if ($this->payment_infos->add_options($data)) {
-                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) == total_items(get_grouped_item(get_items(unserialize($this->payment->get($data['id_paiement'])->options))))) ? STATUS_END : STATUS_PROCESS;
+                    $state = ($this->payment_infos->get_total_by_payment($data['id_paiement']) == total_items(get_grouped_item(get_items($payment = unserialize($this->payment->get($data['id_paiement'])->options))))) ? STATUS_END : STATUS_PROCESS;
 
                     $this->payment->updateOption(['status' => $state], ['id' => $data['id_paiement']]);
                     try {
                         $this->woocommerce->change_order_state($this->payment->get_option($data['id_paiement'], 'cmd_id'), dc_to_wc_status($state));
+                        $this->sendEmail->send($payment, $state);
                     } catch (Exception $e) {
                         $this->__alert_order("Nous n'avons pas pu mettre à jour cette commande depuis wordpress ! Veuillez le faire manuellement", 'primary');
                     }
@@ -233,6 +235,13 @@ class Order extends BaseController
             $returns[$key]['number'] = $value->info_value;
         }
         echo json_encode($returns);
+    }
+
+    function hello()
+    {
+        echo ($this->sendemail->send([], STATUS_SUCCESS)) ?
+        "Message envoyé avec succès":
+        "L'envoie du messsage a échoué";
     }
 
 }
